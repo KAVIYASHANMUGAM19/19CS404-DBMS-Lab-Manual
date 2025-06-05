@@ -1,94 +1,273 @@
-# Experiment 7: PL/SQL – Variables, Control Structures and Loops
+# Experiment 6: Joins
 
 ## AIM
-To write and execute simple PL/SQL programs using variables, loops, and conditional statements.
-
+To study and implement different types of joins.
 
 ## THEORY
 
-PL/SQL, which stands for Procedural Language extensions to the Structured Query Language (SQL). It is a combination of SQL along with the procedural features of programming languages.
+SQL Joins are used to combine records from two or more tables based on a related column.
+
+### 1. INNER JOIN
+Returns records with matching values in both tables.
 
 **Syntax:**
 ```sql
-DECLARE 
-   <declarations section> 
-BEGIN 
-   <executable command(s)>
-EXCEPTION 
-   <exception handling> 
-END;
+SELECT columns
+FROM table1
+INNER JOIN table2
+ON table1.column = table2.column;
 ```
 
-### Basic Components of PL/SQL Block:
-- DECLARE: Section to declare variables and constants.
-- BEGIN: The execution section that contains PL/SQL statements.
-- EXCEPTION: Handles errors or exceptions that occur in the program.
-- END: Marks the end of the PL/SQL block.
+### 2. LEFT JOIN
+Returns all records from the left table, and matched records from the right.
 
-# PL/SQL Programs – Steps and Expected Output
+**Syntax:**
 
-## 1. Write a PL/SQL program to find the Greatest of Two Numbers
+```sql
+SELECT columns
+FROM table1
+LEFT JOIN table2
+ON table1.column = table2.column;
+```
+### 3. RIGHT JOIN
+Returns all records from the right table, and matched records from the left.
 
-### Steps:
-- Declare two numeric variables and initialize them.
-- Use an `IF` statement to compare the values.
-- Display the greater number using `DBMS_OUTPUT.PUT_LINE`.
+**Syntax:**
 
-**Expected Output:**  
-Greater number is: 80
+```sql
+SELECT columns
+FROM table1
+RIGHT JOIN table2
+ON table1.column = table2.column;
+```
+### 4. FULL OUTER JOIN
+Returns all records when there is a match in either left or right table.
 
+**Syntax:**
+
+```sql
+SELECT columns
+FROM table1
+FULL OUTER JOIN table2
+ON table1.column = table2.column;
+```
+
+**Question 1**
+--
+![image](https://github.com/user-attachments/assets/6a7d531f-ab7a-4676-a915-51cf6a349ce5)
+
+```sql
+SELECT 
+    customer.cust_name AS "Customer Name", 
+    customer.city AS "city", 
+    salesman.name AS "Salesman", 
+    salesman.commission
+FROM 
+    customer
+JOIN 
+    salesman
+ON 
+    customer.salesman_id = salesman.salesman_id
+WHERE 
+    salesman.commission > 0.12;
+```
+
+**Output:**
+
+![image](https://github.com/user-attachments/assets/17930339-1ff8-4711-a2b1-f114420b8203)
+
+**Question 2**
 ---
+![image](https://github.com/user-attachments/assets/d3242b2e-3391-4cb3-a605-416836846233)
 
-## 2. Write a PL/SQL program to Calculate Sum of First N Natural Numbers
+```sql
+SELECT 
+    patients.date_of_birth, 
+    appointments.*
+FROM 
+    patients
+JOIN 
+    appointments
+ON 
+    patients.patient_id = appointments.patient_id
+WHERE 
+    patients.first_name = 'Alice';
+```
 
-### Steps:
-- Declare a variable `n` and assign a value (e.g., 10).
-- Initialize a `sum` variable to 0.
-- Use a `WHILE` loop to iterate from 1 to `n`, adding each number to the sum.
-- Display the result using `DBMS_OUTPUT.PUT_LINE`.
+**Output:**
 
-**Expected Output:**  
-Sum of first 10 natural numbers is: 55
+![image](https://github.com/user-attachments/assets/f39c1ec5-21f6-490f-97fa-aa19952d99b8)
 
+**Question 3**
 ---
+![image](https://github.com/user-attachments/assets/097557ad-6d0d-4e7c-b56e-8bff11cd916f)
 
-## 3. Write a PL/SQL program to generate Fibonacci series
+```sql
+SELECT 
+    orders.ord_no, 
+    orders.ord_date, 
+    orders.purch_amt, 
+    customer.cust_name AS "Customer Name", 
+    customer.grade, 
+    salesman.name AS "Salesman", 
+    salesman.commission
+FROM 
+    orders
+JOIN 
+    customer ON orders.customer_id = customer.customer_id
+JOIN 
+    salesman ON orders.salesman_id = salesman.salesman_id;
+```
 
-### Steps:
-- Declare the variable `n` to indicate how many terms to generate.
-- Initialize the first two Fibonacci numbers (0 and 1).
-- Use a loop to generate the next terms using the formula `c = a + b`.
-- Print each term in the series.
+**Output:**
 
-**Expected Output:**  
-n = 7  
-Fibonacci sequence: 0, 1, 1, 2, 3, 5, 8
+![image](https://github.com/user-attachments/assets/1bb423b5-b96f-453c-8285-9846debb43d7)
 
+**Question 4**
 ---
+![image](https://github.com/user-attachments/assets/cc381617-fa50-4692-96e2-8bffba32000c)
 
-## 4. Write a PL/SQL Program to display the number in Reverse Order
+```sql
+SELECT 
+    customer.cust_name, 
+    customer.city, 
+    customer.grade, 
+    salesman.name AS "Salesman", 
+    salesman.city AS "city"
+FROM 
+    customer
+JOIN 
+    salesman ON customer.salesman_id = salesman.salesman_id
+WHERE 
+    customer.grade < 300
+ORDER BY 
+    customer.customer_id ASC;
+```
 
-### Steps:
-- Declare a variable `n` and assign a value (e.g., 1535).
-- Use a loop to extract each digit using modulo and reverse the number.
-- Display the reversed number.
+**Output:**
 
-**Expected Output:**  
-n = 1535  
-Reversed number is 5351
+![image](https://github.com/user-attachments/assets/d0cfb6e4-ef2e-43e5-b0e9-5a2874ba62b7)
 
+**Question 5**
 ---
+![image](https://github.com/user-attachments/assets/64fc32f2-45b3-4f9d-9954-cb543e52f9a4)
 
-## 5. Write a PL/SQL program to find the largest of three numbers
+```sql
+SELECT 
+    s.name
+FROM 
+    salesman AS s
+LEFT JOIN 
+    customer AS c ON s.salesman_id = c.salesman_id
+WHERE 
+    c.city = 'London';
+```
 
-### Steps:
-- Declare three numeric variables `a`, `b`, and `c`.
-- Use nested `IF-ELSIF-ELSE` conditions to find the largest among the three.
-- Display the largest number.
+**Output:**
 
-**Expected Output:**  
-a = 10, b = 9, c = 15  
-Largest of three number is 15
+![image](https://github.com/user-attachments/assets/6d8fbe7c-6d7e-4108-a9d9-4f40df26eadd)
+
+**Question 6**
+---
+![image](https://github.com/user-attachments/assets/3676007b-6cbb-4aaa-be38-be3b7490a343)
+
+```sql
+SELECT 
+    c.cust_name
+FROM 
+    customer AS c
+LEFT JOIN 
+    orders AS o ON c.customer_id = o.customer_id;
+```
+
+**Output:**
+
+![image](https://github.com/user-attachments/assets/04dc1a46-1a8c-434a-ba1b-0a2ec097d8de)
+
+**Question 7**
+---
+![image](https://github.com/user-attachments/assets/975eee13-6675-4d54-b674-ec9078a29105)
+
+```sql
+SELECT 
+    p.first_name AS patient_name, 
+    t.*
+FROM 
+    patients AS p
+INNER JOIN 
+    test_results AS t ON p.patient_id = t.patient_id;
+```
+
+**Output:**
+
+![image](https://github.com/user-attachments/assets/67823836-4e83-4be1-a1ae-a33de5189991)
+
+**Question 8**
+---
+![image](https://github.com/user-attachments/assets/2cd468b9-1846-4cad-a2ae-49cfc5db6f79)
+
+```sql
+SELECT 
+    c.cust_name, 
+    c.city AS city, 
+    c.grade, 
+    s.name AS Salesman, 
+    s.city AS city
+FROM 
+    customer c
+LEFT JOIN 
+    salesman s 
+ON 
+    c.salesman_id = s.salesman_id
+ORDER BY 
+    c.customer_id ASC;
+```
+
+**Output:**
+
+![image](https://github.com/user-attachments/assets/71369dc3-8140-495d-bfd5-3528da1c1715)
+
+**Question 9**
+---
+![image](https://github.com/user-attachments/assets/1c055a9f-cf86-4140-8ae1-0578c3d74740)
+
+```sql
+SELECT 
+    p.admission_date, 
+    s.surgery_date
+FROM 
+    patients p
+INNER JOIN 
+    surgeries s 
+ON 
+    p.patient_id = s.patient_id;
+```
+
+**Output:**
+
+![image](https://github.com/user-attachments/assets/7a9059e3-1ca2-43bc-9473-ff3cd0245120)
+
+**Question 10**
+---
+![image](https://github.com/user-attachments/assets/6e570580-23be-4f6e-86db-1f7a43afc23c)
+
+```sql
+SELECT 
+    c.cust_name AS "Customer Name", 
+    c.city, 
+    s.name AS "Salesman", 
+    s.commission
+FROM 
+    customer c
+JOIN 
+    salesman s 
+ON 
+    c.salesman_id = s.salesman_id;
+```
+
+**Output:**
+
+![image](https://github.com/user-attachments/assets/f2ed3a8d-50ee-4576-b936-9dfde3589de2)
 
 ## RESULT
-Thus, the PL/SQL programs using variables, conditionals, and loops were executed successfully.
+Thus, the SQL queries to implement different types of joins have been executed successfully.
