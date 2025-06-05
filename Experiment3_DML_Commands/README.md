@@ -168,3 +168,4 @@ DELETE FROM Customer WHERE GRADE<2;
 ![image](https://github.com/user-attachments/assets/d0c42f99-02e6-4b69-8566-ea4d03e9c8c6)
 
 ## RESULT
+Thus, the SQL queries to implement DML commands have been executed successfully.
